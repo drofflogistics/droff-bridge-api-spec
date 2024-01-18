@@ -18,11 +18,23 @@ paths:
     parameters: []
     patch:
       summary: Update delivery status
-      operationId: editDelivery
+      operationId: updateDelivery
       responses: {}
       description: Update delivery status
       requestBody:
-        content: {}
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: '#/components/schemas/DeliveryStatusEnum'
+                  x-stoplight:
+                    id: amio7ygms6ki1
+            examples:
+              Example 1:
+                value:
+                  status: CANCELLED
         description: Patch user properties to update.
       tags:
         - Delivery
