@@ -9,35 +9,13 @@ info:
   contact:
     email: info@drofflogistics@gmail.com
 servers:
-  - description: staging
-    url: 'https://api-test.drofflogistics.com'
+  - description: test
+    url: 'https://api-dev.drofflogistics.com'
   - description: production
     url: 'https://api-test.drofflogistics.com'
 paths:
-  /deliveries:
+  /v1/deliveries:
     parameters: []
-    patch:
-      summary: Update delivery status
-      operationId: updateDelivery
-      responses: {}
-      description: Update delivery status
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  $ref: '#/components/schemas/DeliveryStatusEnum'
-                  x-stoplight:
-                    id: amio7ygms6ki1
-            examples:
-              Example 1:
-                value:
-                  status: CANCELLED
-        description: Patch user properties to update.
-      tags:
-        - Delivery
     post:
       summary: Book delivery
       operationId: bookDelivery
@@ -70,6 +48,45 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DeliveryRequest'
+  '/v1/deliveries/{id}/status':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    patch:
+      summary: ''
+      operationId: updateDeliveryStatus
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  deliveryId:
+                    type: string
+                  status:
+                    type: string
+                x-examples:
+                  Example 1:
+                    message: Delivery status updated
+                    deliveryId: 01HMVT6HPRBN27J461VGJ9R08P
+                    status: PENDING
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: '#/components/schemas/DeliveryStatusEnum'
+                  x-stoplight:
+                    id: k9fzgc7p5o98y
 components:
   schemas:
     DeliveryRequest:
@@ -145,9 +162,11 @@ components:
         - COMPLETED
         - RESCHEDULED
   securitySchemes:
-    x-api-key:
+    x-droff-api-key:
       name: API Key
       type: apiKey
-      in: query
+      in: header
 tags:
   - name: Delivery
+security:
+  - x-droff-api-key: []
