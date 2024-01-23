@@ -104,14 +104,7 @@ components:
           clientCash: 0
           additionalInfo: string
           payer: CUSTOMER
-      examples:
-        - item: Necklace
-          pickupLocation: 'Osu, Ringway'
-          dropoffLocation: Adenta housing down
-          dropoffPhoneNumber: '+23350000000000'
-          clientCash: 3000
-          additionalInfo: Gold
-          payer: BUSINESS
+      examples: []
       title: DeliveryRequest
       description: Request body for book a new delivery
       properties:
@@ -122,7 +115,7 @@ components:
         pickupPhoneNumber:
           type: string
           x-stoplight:
-            id: gln310yphyvk1
+            id: si5k6np9alpoy
         dropoffLocation:
           type: string
         dropoffPhoneNumber:
@@ -138,6 +131,7 @@ components:
         - pickupLocation
         - pickupPhoneNumber
         - dropoffLocation
+        - pickupPhoneNumber
         - dropoffPhoneNumber
         - clientCash
         - payer
