@@ -87,6 +87,8 @@ paths:
                   $ref: '#/components/schemas/DeliveryStatusEnum'
                   x-stoplight:
                     id: k9fzgc7p5o98y
+      tags:
+        - Delivery
 components:
   schemas:
     DeliveryRequest:
