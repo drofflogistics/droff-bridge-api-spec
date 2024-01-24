@@ -56,7 +56,7 @@ paths:
         in: path
         required: true
     patch:
-      summary: ''
+      summary: Update delivery status
       operationId: updateDeliveryStatus
       responses:
         '200':
@@ -89,6 +89,7 @@ paths:
                     id: k9fzgc7p5o98y
       tags:
         - Delivery
+      description: Update status of delivery
   '/v1/deliveries/{id}':
     parameters:
       - schema:
@@ -97,7 +98,7 @@ paths:
         in: path
         required: true
     get:
-      summary: ''
+      summary: Fetch delivery
       operationId: fetchDelivery
       responses:
         '200':
@@ -107,6 +108,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Delivery'
       description: Fetch delivery details
+      tags:
+        - Delivery
 components:
   schemas:
     DeliveryRequest:
@@ -219,6 +222,12 @@ components:
         - IN_TRANSIT
         - COMPLETED
         - RESCHEDULED
-  securitySchemes: {}
+  securitySchemes:
+    x-droff-api-key:
+      name: API Key
+      type: apiKey
+      in: header
 tags:
   - name: Delivery
+security:
+  - x-droff-api-key: []
