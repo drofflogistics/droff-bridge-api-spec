@@ -110,6 +110,49 @@ paths:
       description: Fetch delivery details
       tags:
         - Delivery
+  /v1/health:
+    get:
+      summary: Health check
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: 9vopxu3tf6pzj
+                required:
+                  - message
+      operationId: helathCheck
+      description: ''
+  /delivery-webhook:
+    post:
+      summary: Delivery webhook
+      operationId: deliveryWebhook
+      responses:
+        '200':
+          description: OK
+      description: |
+        To keep you updated on the status of your deleiveries, we send the status to your webhook url that you provide. This request just highlights the request body we send.
+
+        You are required to provide a webhook url we can send updates to. The url should:
+        - Should be a POST endpoint
+        - Process JSON requests
+        - Return a 200 OK immediately so your application can continue processing the data in the background
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryWebhookPayload'
+      x-internal: true
+      tags:
+        - Webhooks
+    parameters: []
 components:
   schemas:
     DeliveryRequest:
@@ -222,6 +265,40 @@ components:
         - IN_TRANSIT
         - COMPLETED
         - RESCHEDULED
+    DeliveryWebhookPayload:
+      title: DeliveryWebhookPayload
+      x-stoplight:
+        id: emsrf1zbow1tk
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/WebhookEventEnum'
+          x-stoplight:
+            id: 6uzyaeq5kl4ph
+        id:
+          type: string
+        referenceCode:
+          type: string
+          x-stoplight:
+            id: vmw78gjyj6l6r
+        status:
+          $ref: '#/components/schemas/DeliveryStatusEnum'
+          x-stoplight:
+            id: vmw78gjyj6l6r
+      required:
+        - id
+        - referenceCode
+        - status
+      description: Data sent to provided webhook url
+    WebhookEventEnum:
+      title: WebhookEventEnum
+      x-stoplight:
+        id: kxar93qemey4k
+      type: string
+      description: Types of webhook events
+      enum:
+        - delivery.booked
+        - delivery.updated
   securitySchemes:
     x-droff-api-key:
       name: API Key
@@ -229,5 +306,6 @@ components:
       in: header
 tags:
   - name: Delivery
+  - name: Webhooks
 security:
   - x-droff-api-key: []
