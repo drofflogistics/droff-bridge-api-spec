@@ -48,6 +48,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DeliveryRequest'
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-droff-api-key
   '/v1/api-portal/deliveries/{id}/status':
     parameters:
       - schema:
@@ -90,6 +95,11 @@ paths:
       tags:
         - Delivery
       description: Update status of delivery
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-droff-api-key
   '/v1/api-portal/deliveries/{id}':
     parameters:
       - schema:
@@ -110,6 +120,11 @@ paths:
       description: Fetch delivery details
       tags:
         - Delivery
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-droff-api-key
   /v1/health:
     get:
       summary: Health check
@@ -299,13 +314,7 @@ components:
       enum:
         - delivery.booked
         - delivery.updated
-  securitySchemes:
-    x-droff-api-key:
-      name: API Key
-      type: apiKey
-      in: header
+  securitySchemes: {}
 tags:
   - name: Delivery
   - name: Webhooks
-security:
-  - x-droff-api-key: []
