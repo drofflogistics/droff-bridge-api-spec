@@ -14,7 +14,7 @@ servers:
   - description: production
     url: 'https://api-test.drofflogistics.com'
 paths:
-  /v1/deliveries:
+  /v1/api-portaldeliveries:
     parameters: []
     post:
       summary: Book delivery
@@ -48,7 +48,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DeliveryRequest'
-  '/v1/deliveries/{id}/status':
+  '/v1/api-portal/deliveries/{id}/status':
     parameters:
       - schema:
           type: string
@@ -90,7 +90,7 @@ paths:
       tags:
         - Delivery
       description: Update status of delivery
-  '/v1/deliveries/{id}':
+  '/v1/api-portal/deliveries/{id}':
     parameters:
       - schema:
           type: string
