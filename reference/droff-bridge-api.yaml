@@ -14,7 +14,7 @@ servers:
   - description: production
     url: 'https://api-test.drofflogistics.com'
 paths:
-  /v1/api-portaldeliveries:
+  /v1/api-portal/deliveries:
     parameters: []
     post:
       summary: Book delivery
