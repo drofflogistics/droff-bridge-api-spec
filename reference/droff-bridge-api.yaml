@@ -35,6 +35,14 @@ paths:
                     type: string
                   id:
                     type: string
+                  referenceCode:
+                    type: string
+                    x-stoplight:
+                      id: 4quniwkw5kzlg
+                  status:
+                    $ref: '#/components/schemas/DeliveryStatusEnum'
+                    x-stoplight:
+                      id: k6frhvxoq34jv
               examples:
                 Example 1:
                   value:
@@ -92,6 +100,14 @@ paths:
                   $ref: '#/components/schemas/DeliveryStatusEnum'
                   x-stoplight:
                     id: k9fzgc7p5o98y
+                message:
+                  type: string
+                  x-stoplight:
+                    id: amqd4hfq0eubc
+                id:
+                  type: string
+                  x-stoplight:
+                    id: 0tjikl3ozce4o
       tags:
         - Delivery
       description: Update status of delivery
@@ -216,48 +232,63 @@ components:
         - payer
     Delivery:
       type: object
-      x-stoplight:
-        id: zsqknmescy3rh
       x-examples:
         Example 1:
-          item: string
-          pickupLocation: string
-          dropoffLocation: string
-          dropoffPhoneNumber: string
-          clientCash: 0
-          additionalInfo: string
+          referenceCode: DF-G2V2O22I9D
+          item: Something
+          pickupLocation: 'Dome pillar 2, Accra, Ghana'
+          pickupPhoneNumber: '+233559874922'
+          dropoffLocation: 'Tema Motorway Roundabout, Tema, Ghana'
+          dropoffPhoneNumber: '+233559874922'
           payer: CUSTOMER
-      examples: []
-      title: Delivery
-      description: Delivery details
+          clientCash: 20000
+          deliveryCharge: 1000
+          additionalInfo: ''
+          status: PENDING
+          createdAt: '2024-02-22T17:19:46.000Z'
+          completedAt: null
       properties:
+        referenceCode:
+          type: string
         item:
           type: string
         pickupLocation:
           type: string
         pickupPhoneNumber:
           type: string
-          x-stoplight:
-            id: si5k6np9alpoy
         dropoffLocation:
           type: string
         dropoffPhoneNumber:
           type: string
+        payer:
+          $ref: '#/components/schemas/PayerEnum'
         clientCash:
+          type: integer
+        deliveryCharge:
           type: integer
         additionalInfo:
           type: string
-        payer:
-          $ref: '#/components/schemas/PayerEnum'
+        status:
+          $ref: '#/components/schemas/DeliveryStatusEnum'
+        createdAt:
+          type: string
+        completedAt:
+          type:
+            - string
+            - 'null'
       required:
+        - referenceCode
         - item
         - pickupLocation
         - pickupPhoneNumber
         - dropoffLocation
-        - pickupPhoneNumber
         - dropoffPhoneNumber
-        - clientCash
         - payer
+        - clientCash
+        - deliveryCharge
+        - status
+        - createdAt
+      description: Delivery details
     PayerEnum:
       title: PayerEnum
       x-stoplight:
