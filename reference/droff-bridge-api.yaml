@@ -43,11 +43,7 @@ paths:
                     $ref: '#/components/schemas/DeliveryStatusEnum'
                     x-stoplight:
                       id: k6frhvxoq34jv
-              examples:
-                Example 1:
-                  value:
-                    message: Delivery booked
-                    id: FGGHJHJKKJ
+              examples: {}
       description: Book new delivery
       tags:
         - Delivery
