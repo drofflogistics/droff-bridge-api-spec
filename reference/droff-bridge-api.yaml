@@ -2,17 +2,15 @@ openapi: 3.1.0
 x-stoplight:
   id: emz6g9komh9o6
 info:
-  title: Droff Bridge API
-  version: "1.0"
+  title: Droff Tunnel API
+  version: '1.0'
   summary: Droff APIs for third parties
-  description: ""
+  description: External APIs for booking and managing deliveries with Droff Logistics
   contact:
     email: info@drofflogistics@gmail.com
 servers:
   - description: test
-    url: "https://api-dev.drofflogistics.com"
-  - description: production
-    url: "https://api-test.drofflogistics.com"
+    url: 'https://api-dev.drofflogistics.com'
 paths:
   /v1/api-portal/deliveries:
     parameters: []
@@ -20,7 +18,7 @@ paths:
       summary: Book delivery
       operationId: bookDelivery
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
@@ -40,9 +38,14 @@ paths:
                     x-stoplight:
                       id: 4quniwkw5kzlg
                   status:
-                    $ref: "#/components/schemas/DeliveryStatusEnum"
+                    $ref: '#/components/schemas/DeliveryStatusEnum'
                     x-stoplight:
                       id: k6frhvxoq34jv
+                required:
+                  - message
+                  - id
+                  - referenceCode
+                  - status
               examples: {}
       description: Book new delivery
       tags:
@@ -51,13 +54,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DeliveryRequest"
+              $ref: '#/components/schemas/DeliveryRequest'
       parameters:
         - schema:
             type: string
           in: header
           name: x-droff-api-key
-  "/v1/api-portal/deliveries/{id}/status":
+  '/v1/api-portal/deliveries/{id}/status':
     parameters:
       - schema:
           type: string
@@ -68,7 +71,7 @@ paths:
       summary: Update delivery status
       operationId: updateDeliveryStatus
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -93,7 +96,7 @@ paths:
               type: object
               properties:
                 status:
-                  $ref: "#/components/schemas/DeliveryStatusEnum"
+                  $ref: '#/components/schemas/DeliveryStatusEnum'
                   x-stoplight:
                     id: k9fzgc7p5o98y
                 message:
@@ -104,6 +107,10 @@ paths:
                   type: string
                   x-stoplight:
                     id: 0tjikl3ozce4o
+              required:
+                - status
+                - message
+                - id
       tags:
         - Delivery
       description: Update status of delivery
@@ -112,7 +119,7 @@ paths:
             type: string
           in: header
           name: x-droff-api-key
-  "/v1/api-portal/deliveries/{id}":
+  '/v1/api-portal/deliveries/{id}':
     parameters:
       - schema:
           type: string
@@ -123,12 +130,12 @@ paths:
       summary: Fetch delivery
       operationId: fetchDelivery
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Delivery"
+                $ref: '#/components/schemas/Delivery'
       description: Fetch delivery details
       tags:
         - Delivery
@@ -142,7 +149,7 @@ paths:
       summary: Health check
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -156,13 +163,13 @@ paths:
                 required:
                   - message
       operationId: helathCheck
-      description: ""
+      description: ''
   /delivery-webhook:
     post:
       summary: Delivery webhook
       operationId: deliveryWebhook
       responses:
-        "200":
+        '200':
           description: OK
       description: |
         To keep you updated on the status of your deliveries, we send the status to your webhook url that you provide. This request just highlights the request body we send.
@@ -175,7 +182,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DeliveryWebhookPayload"
+              $ref: '#/components/schemas/DeliveryWebhookPayload'
       x-internal: true
       tags:
         - Webhooks
@@ -216,7 +223,7 @@ components:
         additionalInfo:
           type: string
         payer:
-          $ref: "#/components/schemas/PayerEnum"
+          $ref: '#/components/schemas/PayerEnum'
       required:
         - item
         - pickupLocation
@@ -232,16 +239,16 @@ components:
         Example 1:
           referenceCode: DF-G2V2O22I9D
           item: Something
-          pickupLocation: "Dome pillar 2, Accra, Ghana"
-          pickupPhoneNumber: "+233559874922"
-          dropoffLocation: "Tema Motorway Roundabout, Tema, Ghana"
-          dropoffPhoneNumber: "+233559874922"
+          pickupLocation: 'Dome pillar 2, Accra, Ghana'
+          pickupPhoneNumber: '+233559874922'
+          dropoffLocation: 'Tema Motorway Roundabout, Tema, Ghana'
+          dropoffPhoneNumber: '+233559874922'
           payer: CUSTOMER
           clientCash: 20000
           deliveryCharge: 1000
-          additionalInfo: ""
+          additionalInfo: ''
           status: PENDING
-          createdAt: "2024-02-22T17:19:46.000Z"
+          createdAt: '2024-02-22T17:19:46.000Z'
           completedAt: null
       properties:
         referenceCode:
@@ -257,7 +264,7 @@ components:
         dropoffPhoneNumber:
           type: string
         payer:
-          $ref: "#/components/schemas/PayerEnum"
+          $ref: '#/components/schemas/PayerEnum'
         clientCash:
           type: integer
         deliveryCharge:
@@ -265,13 +272,13 @@ components:
         additionalInfo:
           type: string
         status:
-          $ref: "#/components/schemas/DeliveryStatusEnum"
+          $ref: '#/components/schemas/DeliveryStatusEnum'
         createdAt:
           type: string
         completedAt:
           type:
             - string
-            - "null"
+            - 'null'
       required:
         - referenceCode
         - item
@@ -314,7 +321,7 @@ components:
       type: object
       properties:
         event:
-          $ref: "#/components/schemas/WebhookEventEnum"
+          $ref: '#/components/schemas/WebhookEventEnum'
           x-stoplight:
             id: 6uzyaeq5kl4ph
         id:
@@ -324,7 +331,7 @@ components:
           x-stoplight:
             id: vmw78gjyj6l6r
         status:
-          $ref: "#/components/schemas/DeliveryStatusEnum"
+          $ref: '#/components/schemas/DeliveryStatusEnum'
           x-stoplight:
             id: vmw78gjyj6l6r
       required:
