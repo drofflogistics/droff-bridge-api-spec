@@ -1,0 +1,237 @@
+openapi: 3.0.0
+x-stoplight:
+  id: 6zgiyaw779n2o
+info:
+  title: Droff Tunnel API
+  version: '1.0'
+  description: External APIs for booking and managing deliveries with Droff Logistics
+  contact:
+    email: info@drofflogistics.com
+servers:
+  - url: 'https://api-dev.drofflogistics.com'
+    description: test
+paths:
+  /v1/health:
+    get:
+      summary: Health check
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  version:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      documentation:
+                        type: string
+                      about:
+                        type: string
+                x-examples:
+                  Example 1:
+                    message: Droff API
+                    version: 0.2.0
+                    links:
+                      documentation: 'http://docs-bridge-api.drofflogistics.com'
+                      about: drofflogistics.com
+      operationId: healthCheck
+      description: Check the status of the API
+  /v1/api-portal/deliveries:
+    post:
+      summary: Book delivery
+      operationId: bookDelivery
+      responses:
+        '200':
+          description: OK
+      description: Book a delivery request
+      tags:
+        - Deliveries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookDeliveryRequest'
+  '/v1/api-portal/deliveries/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    patch:
+      summary: Update delivery details
+      operationId: updateDelivery
+      responses:
+        '200':
+          description: OK
+      description: 'Edit the details you provided for a particular deliveries, if it is still pending'
+      tags:
+        - Deliveries
+    get:
+      summary: Fetch delivery details
+      operationId: fetchDelivery
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookDeliveryRequest'
+      description: Get the details fo your booked delivery
+      tags:
+        - Deliveries
+components:
+  schemas:
+    BookDeliveryRequest:
+      type: object
+      x-stoplight:
+        id: m85snl4mog7mv
+      x-examples:
+        Example 1:
+          item: string
+          pickupLocation: string
+          dropoffLocation: string
+          dropoffPhoneNumber: string
+          clientCash: 0
+          additionalInfo: string
+          payer: CUSTOMER
+      title: DeliveryRequest
+      description: Request body for book a new delivery
+      properties:
+        item:
+          type: string
+        pickupLocation:
+          type: string
+        pickupPhoneNumber:
+          type: string
+        dropoffLocation:
+          type: string
+        dropoffPhoneNumber:
+          type: string
+        clientCash:
+          type: integer
+        additionalInfo:
+          type: string
+        payer:
+          $ref: '#/components/schemas/PayerEnum'
+      required:
+        - item
+        - pickupLocation
+        - pickupPhoneNumber
+        - dropoffLocation
+        - dropoffPhoneNumber
+        - clientCash
+        - payer
+    DeliveryStatusEnum:
+      title: DeliveryStatusEnum
+      x-stoplight:
+        id: wrrvv0gjyegb5
+      type: object
+      properties:
+        id:
+          type: string
+          enum:
+            - PENDING
+            - ACCEPTED
+            - REJECTED
+            - IN_TRANSIT
+            - COMPLETED
+            - RESCHEDULED
+    PayerEnum:
+      title: PayerEnum
+      x-stoplight:
+        id: 5az3vyp8m5hr4
+      type: object
+      properties:
+        id:
+          type: string
+          enum:
+            - CUSTOMER
+            - BUSINESS
+    Delivery:
+      title: Delivery
+      x-stoplight:
+        id: cydozkmpu8d7o
+      type: object
+      properties:
+        referenceCode:
+          type: string
+        item:
+          type: string
+        pickupLocation:
+          type: string
+        pickupPhoneNumber:
+          type: string
+        dropoffLocation:
+          type: string
+        dropoffPhoneNumber:
+          type: string
+        payer:
+          $ref: '#/components/schemas/PayerEnum'
+        clientCash:
+          type: integer
+        deliveryCharge:
+          type: integer
+        additionalInfo:
+          type: string
+        status:
+          $ref: '#/components/schemas/DeliveryStatusEnum'
+        createdAt:
+          type: string
+        completedAt:
+          type: string
+      required:
+        - referenceCode
+        - item
+        - pickupLocation
+        - pickupPhoneNumber
+        - dropoffLocation
+        - dropoffPhoneNumber
+        - payer
+        - clientCash
+        - deliveryCharge
+        - status
+        - createdAt
+      description: Delivery details
+    DeliveryWebhookPayload:
+      title: DeliveryWebhookPayload
+      x-stoplight:
+        id: 76ri1ykdhxo1r
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/WebhookEventEnum'
+        id:
+          type: string
+        referenceCode:
+          type: string
+        status:
+          $ref: '#/components/schemas/DeliveryStatusEnum'
+      required:
+        - id
+        - referenceCode
+        - status
+      description: Data sent to your webhook url
+    WebhookEventEnum:
+      title: WebhookEventEnum
+      x-stoplight:
+        id: mbc5mzuvivfhx
+      type: string
+      description: Types of webhook events
+      enum:
+        - delivery.booked
+        - delivery.updated
+  securitySchemes:
+    x-droff-api-key:
+      name: API Key
+      type: apiKey
+      in: header
+tags:
+  - name: Deliveries
